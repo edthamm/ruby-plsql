@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/rsim/ruby-plsql.svg?branch=master)](https://travis-ci.org/rsim/ruby-plsql)
+[![Build Status](https://travis-ci.org/edthamm/ruby-plsql.svg?branch=master)](https://travis-ci.org/edthamm/ruby-plsql)
 
 ruby-plsql
 ==========
