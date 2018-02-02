@@ -240,9 +240,13 @@ module PLSQL
     end
 
     def determine_index_type(type_name)
-      index_type = @schema.select_one("SELECT type FROM sys.dba_identifiers WHERE name = '#{type_name}' and usage = 'DECLARATION'")
-      return ",\ni__ VARCHAR2(4000)\n" if index_type == "ASSOCIATIVE ARRAY"
-      ",\ni__ NUMBER(38)\n"
+      begin
+        index_type = @schema.select_one("SELECT type FROM sys.dba_identifiers WHERE name = '#{type_name}' and usage = 'DECLARATION'")
+        return ",\ni__ VARCHAR2(4000)\n" if index_type == "ASSOCIATIVE ARRAY"
+        ",\ni__ NUMBER(38)\n"
+      rescue OCIError
+        ",\ni__ NUMBER(38)\n"
+      end
     end
 
     def overloaded? #:nodoc:
