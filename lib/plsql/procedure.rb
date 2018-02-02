@@ -221,7 +221,7 @@ module PLSQL
         else
           sql << "element #{ProcedureCommon.type_to_sql(element_metadata)}"
         end
-        sql << ",\ni__ NUMBER(38)\n"
+        sql << determine_index_type(argument_metadata[:type_subname])
         sql << ") ON COMMIT PRESERVE ROWS\n"
         sql_block = "DECLARE\nPRAGMA AUTONOMOUS_TRANSACTION;\nBEGIN\nEXECUTE IMMEDIATE :sql;\nEND;\n"
         @schema.execute sql_block, sql
@@ -237,6 +237,12 @@ module PLSQL
     PLSQL_COLLECTION_TYPES = ["PL/SQL TABLE", "TABLE", "VARRAY"].freeze
     def collection_type?(data_type) #:nodoc:
       PLSQL_COLLECTION_TYPES.include? data_type
+    end
+
+    def determine_index_type(type_name)
+      index_type = @schema.select_one("SELECT type FROM sys.dba_identifiers WHERE name = '#{type_name}' and usage = 'DECLARATION'")
+      return ",\ni__ VARCHAR2(4000)\n" if index_type == "ASSOCIATIVE ARRAY"
+      ",\ni__ NUMBER(38)\n"
     end
 
     def overloaded? #:nodoc:
