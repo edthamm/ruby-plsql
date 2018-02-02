@@ -244,7 +244,7 @@ module PLSQL
         index_type = @schema.select_one("SELECT type FROM sys.dba_identifiers WHERE name = '#{type_name}' and usage = 'DECLARATION'")
         return ",\ni__ VARCHAR2(4000)\n" if index_type == "ASSOCIATIVE ARRAY"
         ",\ni__ NUMBER(38)\n"
-      rescue OCIError
+      rescue # no matter what fails preserve previous behavior
         ",\ni__ NUMBER(38)\n"
       end
     end
