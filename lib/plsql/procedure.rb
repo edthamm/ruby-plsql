@@ -241,7 +241,7 @@ module PLSQL
 
     def determine_index_type(type_name)
       begin
-        index_type = @schema.select_one("SELECT type FROM sys.dba_identifiers WHERE name = '#{type_name}' and usage = 'DECLARATION'")
+        index_type = @schema.select_one("SELECT type FROM sys.all_identifiers WHERE name = '#{type_name}' and usage = 'DECLARATION'")
         return ",\ni__ VARCHAR2(4000)\n" if index_type == "ASSOCIATIVE ARRAY"
         ",\ni__ NUMBER(38)\n"
       rescue # no matter what fails preserve previous behavior
