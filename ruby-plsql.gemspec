@@ -11,10 +11,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
-  s.authors = ["Raimonds Simanovskis".freeze]
-  s.date = "2016-05-06"
-  s.description = "  ruby-plsql gem provides simple Ruby API for calling Oracle PL/SQL procedures.\n  It could be used both for accessing Oracle PL/SQL API procedures in legacy applications\n  as well as it could be used to create PL/SQL unit tests using Ruby testing libraries.\n".freeze
-  s.email = "raimonds.simanovskis@gmail.com".freeze
+  s.authors = ["Eduard Thamm".freeze]
+  s.date = "2018-03-14"
+  s.description = "  A clone of RSIM'S excellent work.\n  ruby-plsql gem provides simple Ruby API for calling Oracle PL/SQL procedures.\n  It could be used both for accessing Oracle PL/SQL API procedures in legacy applications\n  as well as it could be used to create PL/SQL unit tests using Ruby testing libraries.\n".freeze
+  s.email = "eduard.thamm@thammit.at".freeze
   s.extra_rdoc_files = [
     "README.md"
   ]
@@ -71,7 +71,7 @@ Gem::Specification.new do |s|
     "spec/support/test_db.rb",
     "spec/support/unlock_and_setup_hr_user.sql"
   ]
-  s.homepage = "http://github.com/rsim/ruby-plsql".freeze
+  s.homepage = "http://github.com/edthamm/ruby-plsql".freeze
   s.licenses = ["MIT".freeze]
   s.rubygems_version = "2.6.4".freeze
   s.summary = "Ruby API for calling Oracle PL/SQL procedures.".freeze
