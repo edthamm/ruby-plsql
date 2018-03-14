@@ -16,14 +16,15 @@ begin
     gem.name = "ruby-plsql"
     gem.summary = "Ruby API for calling Oracle PL/SQL procedures."
     gem.description = <<-EOS
+  A clone of RSIM'S excellent work.
   ruby-plsql gem provides simple Ruby API for calling Oracle PL/SQL procedures.
   It could be used both for accessing Oracle PL/SQL API procedures in legacy applications
   as well as it could be used to create PL/SQL unit tests using Ruby testing libraries.
   EOS
-    gem.email = "raimonds.simanovskis@gmail.com"
-    gem.homepage = "http://github.com/rsim/ruby-plsql"
+    gem.email = "eduard.thamm@thammit.at"
+    gem.homepage = "http://github.com/edthamm/ruby-plsql"
     gem.license = "MIT".freeze
-    gem.authors = ["Raimonds Simanovskis"]
+    gem.authors = ["Eduard Thamm"]
     gem.extra_rdoc_files = ["README.md"]
   end
   Juwelier::RubygemsDotOrgTasks.new

@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/edthamm/ruby-plsql.svg?branch=master)](https://travis-ci.org/edthamm/ruby-plsql)
+[![Depfu](https://badges.depfu.com/badges/9c27fe373bb76eec8be9615cccea3cba/overview.svg)](https://depfu.com/github/edthamm/ruby-plsql)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4726b910f9a02be8912a/maintainability)](https://codeclimate.com/github/edthamm/ruby-plsql/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/4726b910f9a02be8912a/test_coverage)](https://codeclimate.com/github/edthamm/ruby-plsql/test_coverage)
 
 ruby-plsql
 ==========
@@ -8,11 +11,13 @@ Ruby API for calling Oracle PL/SQL procedures.
 DESCRIPTION
 -----------
 
+This is a clone of RSIM's excellent work.
+
 ruby-plsql gem provides simple Ruby API for calling Oracle PL/SQL procedures. It could be used both for accessing Oracle PL/SQL API procedures in legacy applications as well as it could be used to create PL/SQL unit tests using Ruby testing libraries.
 
-NUMBER, BINARY_INTEGER, PLS_INTEGER, NATURAL, NATURALN, POSITIVE, POSITIVEN, SIGNTYPE, SIMPLE_INTEGER, VARCHAR, VARCHAR2, NVARCHAR2, CHAR, NCHAR, DATE, TIMESTAMP, CLOB, BLOB, BOOLEAN, PL/SQL RECORD, TABLE, VARRAY, OBJECT and CURSOR types are supported for input and output parameters and return values of PL/SQL procedures and functions.
+NUMBER, BINARY_INTEGER, PLS_INTEGER, NATURAL, NATURALN, POSITIVE, POSITIVEN, SIGNTYPE, SIMPLE_INTEGER, VARCHAR, VARCHAR2, NVARCHAR2, CHAR, NCHAR, DATE, TIMESTAMP, CLOB, BLOB, BOOLEAN, PL/SQL RECORD, TABLE, VARRAY, OBJECT, CURSOR and ASSOCIATIVE ARRAY types are supported for input and output parameters and return values of PL/SQL procedures and functions.
 
-ruby-plsql supports Ruby 2.2, 2.3, 2.4, 2.5 (ruby-oci8 2.2.3+ is needed for Ruby 2.4) and JRuby 9.1 implementations.
+ruby-plsql supports Ruby 2.2, 2.3, 2.4, 2.5 (ruby-oci8 2.2.3+ is needed for Ruby 2.4) and JRuby 9.1 using jdbc6 or higher implementations.
 
 USAGE
 -----
@@ -205,9 +210,8 @@ Review `spec/spec_helper.rb` to see default schema/user names and database names
 LINKS
 -----
 
-* Source code: http://github.com/rsim/ruby-plsql
-* Bug reports / Feature requests: http://github.com/rsim/ruby-plsql/issues
-* Discuss at oracle_enhanced adapter group: http://groups.google.com/group/oracle-enhanced
+* Source code: http://github.com/edthamm/ruby-plsql
+* Bug reports / Feature requests: http://github.com/edthamm/ruby-plsql/issues
 
 CONTRIBUTORS
 ------------
@@ -219,13 +223,14 @@ CONTRIBUTORS
 * Dayle Larson
 * Yasuo Honda
 * Yavor Nikolov
+* Eduard Thamm
 
 LICENSE
 -------
 
 (The MIT License)
 
-Copyright (c) 2008-2014 Raimonds Simanovskis
+Copyright (c) 2018-2023 Eduard Thamm
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

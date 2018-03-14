@@ -14,6 +14,7 @@ env:
     - DATABASE_NAME=XE
     - ORA_SDTZ='Europe/London' #Needed as a client parameter
     - TZ='Europe/London'       #Needed as a DB Server parameter
+    - CC_TEST_REPORTER_ID=487a82758003aa8f43eb73463dcd6c0b0b755012c7e772705b7ad4ce096c9d12
 
 before_install:
   - chmod +x .travis/oracle/download.sh
@@ -47,3 +48,14 @@ matrix:
     allow_failures:
       - rvm: ruby-head
       - rvm: jruby-head
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - bundle exec rake simplecov
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
