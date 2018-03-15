@@ -47,6 +47,8 @@ end
 
 module PLSQL
   class JDBCConnection < Connection  #:nodoc:
+    include PLSQL::Logging
+
     def self.create_raw(params)
       database = params[:database]
       url = if ENV["TNS_ADMIN"] && database && !params[:host] && !params[:url]
@@ -147,6 +149,7 @@ module PLSQL
 
     class Cursor #:nodoc:
       include Connection::CursorCommon
+      include PLSQL::Logging
 
       attr_reader :result_set
       attr_accessor :statement
@@ -539,6 +542,8 @@ module PLSQL
       end
 
       def java_bigdecimal(value)
+        logger.info("Converting to java.math.BigDecimal")
+        logger.debug("Value: #{value.to_s}")
         value && java.math.BigDecimal.new(value.to_s)
       end
 

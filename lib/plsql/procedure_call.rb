@@ -1,5 +1,7 @@
 module PLSQL
   class ProcedureCall #:nodoc:
+    include PLSQL::Logging
+
     def initialize(procedure, args = [], options = {})
       @procedure = procedure
       @schema = @procedure.schema
@@ -12,7 +14,7 @@ module PLSQL
     end
 
     def exec
-      # puts "DEBUG: sql = #{@sql.gsub("\n","<br/>\n")}"
+      logger.debug("Executing ProcedureCall:\n#{@sql}")
       @cursor = @schema.connection.parse(@sql)
 
       @bind_values.each do |arg, value|
@@ -39,6 +41,7 @@ module PLSQL
     private
 
       def get_overload_from_arguments_list(args)
+        logger.debug("Get overload from: #{args}")
         # if not overloaded then overload index 0 is used
         return 0 unless @procedure.overloaded?
         # If named arguments are used then
@@ -144,6 +147,7 @@ module PLSQL
       end
 
       def construct_sql(args)
+        logger.info("Constructing sql")
         @declare_sql = ""
         @assignment_sql = ""
         @call_sql = ""
@@ -423,6 +427,7 @@ module PLSQL
       end
 
       def add_return_table(argument, argument_metadata, is_return_value = false)
+        logger.debug("Adding return table")
         is_index_by_table = argument_metadata[:data_type] == "PL/SQL TABLE"
         declare_i__
         @declare_sql << "l_return #{return_metadata[:sql_type_name]};\n" if is_return_value

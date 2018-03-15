@@ -54,6 +54,7 @@ module PLSQL
   end
 
   module ProcedureCommon #:nodoc:
+    include PLSQL::Logging
     attr_reader :arguments, :argument_list, :out_list, :return
     attr_reader :schema, :schema_name, :package, :procedure
 
@@ -113,6 +114,7 @@ module PLSQL
         ORDER BY overload, sequence",
         @object_id, @schema_name, @procedure
       ) do |r|
+        logger.debug("Argument #{r}")
 
         subprogram_id, object_name, overload, argument_name, position, data_level,
             data_type, in_out, data_length, data_precision, data_scale, char_used,
@@ -131,12 +133,12 @@ module PLSQL
         # type defined inside package
         if type_subname
           if collection_type?(data_type)
-            raise ArgumentError, "#{data_type} type #{sql_type_name} definition inside package is not supported as part of other type definition," <<
-              " use CREATE TYPE outside package" if data_level > 0
+            handle_type_in_type_in_package(data_type, sql_type_name, overload, subprogram_id, position) if data_level > 0
             # if subprogram_id was not supported by all_arguments view
             # then generate unique ID from object_name and overload
             subprogram_id ||= "#{object_name.hash % 10000}#{overload}"
             tmp_table_name = "#{Connection::RUBY_TEMP_TABLE_PREFIX}#{@schema.connection.session_id}_#{@object_id}_#{subprogram_id}_#{position}"
+            logger.debug("Defined temporary table for #{sql_type_name} of type #{data_type} with name #{tmp_table_name}")
           elsif data_type != "PL/SQL RECORD"
             # raise exception only when there are no overloaded procedure definitions
             # (as probably this overload will not be used at all)
@@ -197,6 +199,11 @@ module PLSQL
       construct_argument_list_for_overloads
     end
 
+    def handle_type_in_type_in_package(data_type, sql_type_name, overload, subprogram_id, position)
+      raise ArgumentError, "#{data_type} type #{sql_type_name} definition inside package is not supported as part of other type definition," <<
+              " use CREATE TYPE outside package"
+    end
+
     def construct_argument_list_for_overloads #:nodoc:
       @overloads = @arguments.keys.sort
       @overloads.each do |overload|
@@ -206,6 +213,8 @@ module PLSQL
     end
 
     def ensure_tmp_tables_created(overload) #:nodoc:
+      logger.debug("Ensuring temporary tables created for overload: #{overload}")
+      logger.debug("Defined temporary tables:\n#{@tmp_table_names}")
       return if @tmp_tables_created.nil? || @tmp_tables_created[overload]
       @tmp_table_names[overload] && @tmp_table_names[overload].each do |table_name, argument_metadata|
         sql = "CREATE GLOBAL TEMPORARY TABLE #{table_name} (\n"
@@ -224,6 +233,7 @@ module PLSQL
         sql << determine_index_type(argument_metadata[:type_subname])
         sql << ") ON COMMIT PRESERVE ROWS\n"
         sql_block = "DECLARE\nPRAGMA AUTONOMOUS_TRANSACTION;\nBEGIN\nEXECUTE IMMEDIATE :sql;\nEND;\n"
+        logger.debug("Creating temporary table:\n#{sql}")
         @schema.execute sql_block, sql
       end
       @tmp_tables_created[overload] = true
@@ -272,6 +282,7 @@ module PLSQL
     end
 
     def exec(*args, &block)
+      logger.debug("Arguments to exec: #{args}")
       call = ProcedureCall.new(self, args)
       call.exec(&block)
     end
